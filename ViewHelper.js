@@ -34,9 +34,9 @@ class ViewHelper extends Object3D {
 	 * Constructs a new view helper.
 	 *
 	 * @param {Camera} camera - The camera whose transformation should be visualized.
-	 * @param {HTMLDOMElement} [domElement] - The DOM element that is used to render the view.
+	 * @param {WebGLRenderer|WebGPURenderer} renderer - The renderer that is used to render the view.
 	 */
-	constructor( camera, domElement ) {
+	constructor( camera, renderer ) {
 
 		super();
 
@@ -144,10 +144,8 @@ class ViewHelper extends Object3D {
 		/**
 		 * Renders the helper in a separate view in the bottom-right corner
 		 * of the viewport.
-		 *
-		 * @param {WebGLRenderer|WebGPURenderer} renderer - The renderer.
 		 */
-		this.render = function ( renderer ) {
+		this.render = function () {
 
 			this.quaternion.copy( camera.quaternion ).invert();
 			this.updateMatrixWorld();
@@ -175,7 +173,7 @@ class ViewHelper extends Object3D {
 		const q1 = new Quaternion();
 		const q2 = new Quaternion();
 		const viewport = new Vector4();
-		const helperViewport = new Vector4( domElement.offsetWidth - dim, 0, dim, dim );
+		const helperViewport = new Vector4( renderer.domElement.offsetWidth - dim, renderer.isWebGPURenderer ? renderer.domElement.offsetHeight - dim : 0, dim, dim );
 		let radius = 0;
 
 		/**
@@ -202,9 +200,9 @@ class ViewHelper extends Object3D {
 
 			if ( this.animating === true ) return false;
 
-			const rect = domElement.getBoundingClientRect();
-			const offsetX = rect.left + ( domElement.offsetWidth - dim );
-			const offsetY = rect.top + ( domElement.offsetHeight - dim );
+			const rect = renderer.domElement.getBoundingClientRect();
+			const offsetX = rect.left + ( renderer.domElement.offsetWidth - dim );
+			const offsetY = rect.top + ( renderer.domElement.offsetHeight - dim );
 			mouse.x = ( ( event.clientX - offsetX ) / ( rect.right - offsetX ) ) * 2 - 1;
 			mouse.y = - ( ( event.clientY - offsetY ) / ( rect.bottom - offsetY ) ) * 2 + 1;
 

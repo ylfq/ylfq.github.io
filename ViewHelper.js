@@ -212,6 +212,8 @@ class ViewHelper extends Object3D {
       ? ( event.clientY - rect.top - helperViewport.y ) / helperViewport.z * 2 - 1
       : ( rect.bottom - helperViewport.y - helperViewport.w - event.clientY ) / helperViewport.w * 2 + 1;
 
+      console.log(mouse.x, mouse.y);
+
       raycaster.setFromCamera(mouse, orthoCamera);
 
       const intersects = raycaster.intersectObjects(interactiveObjects);

@@ -356,6 +356,7 @@ model.traverse((obj) => {
     obj.material = model_mat;
   }
 });
+console.log(model)
 const mixer = new THREE.AnimationMixer(model);
 const action = mixer.clipAction(model.animations[0]);
 action.setLoop(THREE.LoopRepeat);
